@@ -94,4 +94,43 @@ def cityreader_stretch(lat1, lon1, lat2, lon2, cities=[]):
     # Go through each city and check to see if it falls within
     # the specified coordinates.
 
+    for city in cities:
+        # account for one corner
+        if lat1 > lat2:
+            # check coordinates of the list and append if they are within the coordinate square
+            # Breakdown:
+            # if list lat is less than lat1 AND
+            # if list lat is greater than lat2 AND
+            # if list lon is less than lon1 AND
+            # if list long is greater than lon2 THEN
+            # The coords are within the square, add to list
+
+            if(city.lat <= lat1 and city.lat >= lat2 and city.lon <= lon1 and city.lon >= lon2):
+                within.append(city)
+        # account for opposite corner - (Breakdown is reversed)
+        elif lat2 > lat1:
+            if(city.lat >= lat1 and city.lat <= lat2 and city.lon >= lon1 and city.lon <= lon2):
+                within.append(city)
+
     return within
+
+
+# get user input
+# normalize the input - first we'll extend the inputs into one
+# then create a list of the inputs, making it a float type just in case some weird coordinates are entered
+# finally, we pass the completed coordinates into the fucntion and create a new list
+# and  print our results
+
+print('Given 2 pairs of coordinates, I\'ll tell you what cities are in the radius. Enter 2 comma separated pairs\n\n')
+input1 = input("Enter the first pair: ").split(',')
+input2 = input("Enter the second pair: ").split(',')
+
+input1.extend(input2)
+search_location = [float(i) for i in input1]
+# print(search_location)
+
+find_cities = cityreader_stretch(
+    search_location[0], search_location[1], search_location[2], search_location[3], cities)
+
+for city in find_cities:
+    print(city)
